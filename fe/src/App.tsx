@@ -137,19 +137,19 @@ function App() {
         <AuthProvider>
           <SocketProvider>
             <Router>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/verify-email" element={<EmailVerification />} />
-                <Route path="/auth/callback" element={<OAuthCallback />} />
-                
-                {/* Protected Routes */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/verify-email" element={<EmailVerification />} />
+                  <Route path="/auth/callback" element={<OAuthCallback />} />
+                  
+                  {/* Protected Routes */}
+                  <Route
+                    path="/*"
+                    element={
+                      <ProtectedRoute>
                         <Navbar />
                         <Box 
                           component="main" 
@@ -160,17 +160,17 @@ function App() {
                           }}
                         >
                           <Routes>
-                            <Route index element={<Navigate to="/dashboard" replace />} />
-                            <Route path="dashboard" element={<Dashboard />} />
-                            <Route path="board/:boardId" element={<BoardView />} />
-                            <Route path="profile" element={<Profile />} />
+                            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/board/:boardId" element={<BoardView />} />
+                            <Route path="/profile" element={<Profile />} />
                           </Routes>
                         </Box>
-                      </Box>
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </Box>
             </Router>
           </SocketProvider>
         </AuthProvider>
