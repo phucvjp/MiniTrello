@@ -14,6 +14,7 @@ import {
 import { GitHub } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 function Register() {
   const navigate = useNavigate();
@@ -44,8 +45,24 @@ function Register() {
       setError("Password must be at least 6 characters long");
       return false;
     }
-    if (formData.username.length < 3) {
+    if (!formData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)) {
+      setError(
+        "Password must contain at least one lowercase letter, one uppercase letter, and one number"
+      );
+      return false;
+    }
+    if (formData.username.length < 3 || formData.username.length > 30) {
       setError("Username must be at least 3 characters long");
+      return false;
+    }
+    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      setError("Invalid email address");
+      return false;
+    }
+    if (!formData.username.match(/^[a-zA-Z0-9_-]+$/)) {
+      setError(
+        "Username can only contain letters, numbers, underscores, and hyphens"
+      );
       return false;
     }
     return true;
@@ -68,7 +85,7 @@ function Register() {
         state: { email: formData.email },
       });
     } catch (err: any) {
-      setError(err.message || "Registration failed");
+      toast.error(err.message || "Registration failed");
     }
   };
 
